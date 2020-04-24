@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link type="text/css" href="./css/case.css" rel="stylesheet" />
+    <link type="text/css" href="./css/header.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/footer.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/method.js"></script>
+    <script src="./js/iconfont.js"></script>
+    <title>产品</title>
+    <style>
+        #icon{
+            width: 60px;
+            height: 60px;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body style="margin: 0">
+    <div class="header">
+        <div class="header_center">
+            <div class="header_image">
+                <img src="./images/logo2.png" alt="金廷">
+            </div>
+            <div class="navigation">
+                <div class="navigation-nav">
+                    <ul class="navigation-item" id="toubua">
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="javascriot:;" id="active">产品</a></li>
+                        <li><a href="./news.html">新闻资讯</a></li>
+                        <li><a href="./introduction.html">公司介绍</a></li>
+                        <li><a href="./contact.html">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="app">
+        <div class="center">
+            <div class="classification">
+                <div class="firstClassification">
+                    <span class="fenlei">分类：</span>
+                    <div class="RadioStyle">
+                        <div class="Block PaddingL">
+                            <ul class="flbox">
+                                <li  @click='changefindData("1",-1,1)' :class='{ischeck:setrchone==""}'>全部</li>
+                                <li v-for='item in type' @click='changefindData("1",item.id,2)' :class='{ischeck:item.check==true}'>{{item.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="firstClassification" id="secoud">
+                    <div class="bzd"></div>
+                    <div class="RadioStyle">
+                        <div class="Block PaddingL">
+                            <ul class="flbox">
+                                <li  @click='changefindData("2",-1,1)' :class='{ischeck:setrchtwo==""}'>全部</li>
+                                <li  v-for='item in typetwo' @click='changefindData("2",item.id,2)' :class='{ischeck:item.check==true}'>{{item.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product">
+                <div class="productItem" v-for="item in producta">
+                    <a v-bind:href="'./caseDetails.html?pid='+item.pid">
+                        <img :src="item.url">
+                        <span class="title">{{item.productName}}</span>
+                        <span class="price">￥{{item.price}}</span>
+                    </a>
+                </div>
+            </div>
+            <div class="page-bar">
+                <ul class="pageSI">
+                    <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+                    <li v-if="cur==1"><a class="banclick">上一页</a></li>
+                    <!--当前页背景色为蓝色-->
+                    <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
+                        <a v-on:click="btnClick(index)">{{ index }}</a>
+                    </li>
+                    <li v-if="cur<all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+                    <li v-if="cur == all"><a class="banclick">下一页</a></li>
+                    <li><a>共<i>{{all}}</i>页</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="goTop" id="gotoTop">
+        <img src="./images/02.png" alt="">
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer" id="link">
+        <div class="center">
+            <div class="left">
+                <svg class="icon" id="icon" aria-hidden="true">
+                    <use xlink:href="#icon-gerenyonghutouxiang" style="color: #7B818D"></use>
+                </svg>
+                <span class="time">(9:00-21:00)</span>
+                <h3>0571-86390185</h3>
+                <span class="qq">QQ联系方式:1523446254</span>
+            </div>
+            <div class="zhongjian">
+                <ul>
+                    <li><a href="javascript:;">首 页</a></li>
+                    <li><a href="/case.html">案例欣赏</a></li>
+                    <li><a href="javascript:;">服务介绍</a></li>
+                    <li><a href="./news.html">新闻动态</a></li>
+                </ul>
+                <ul>
+                    <li><a href="./introduction.html">关于我们</a></li>
+                    <li><a href="./contact.html">联系我们</a></li>
+                    <li><a href="javascript:;">留言板</a></li>
+                </ul>
+            </div>
+            <div class="right">
+                <div class="picture">
+                    <img src="./images/erweima.jpg" alt="">
+                    <span class="guanzhu">关注微信公众号</span>
+                </div>
+            </div>
+            <div class="lianjie">
+                <span class="chuanmei">Copyright © 2013 - 2017　faane.com　杭州金廷基业房地产营销策划有限公司　版权所有  备案图标.png苏公网安备 32011202000125号‍</span>
+                <div class="youqing">
+                    <ul>
+                        <li v-for='item in link'><a :href="'http://'+item.www">{{item.name}}</a></li>
+                    </ul>
+                </div>
+                <span class="chuanmei">手机版 | 苏ICP备18005516号</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="./js/allajax.js"> </script>
+<script type="text/javascript">
+    var serverHost = getServerHosts();
+    var app = new Vue({
+        el:'#app',
+        data:{
+            producta:[],
+            type:[],
+            typetwo:[],
+            all: "", //总页数
+            cur: 1, //当前页码
+            size: 10,
+            setrchtwo:'',
+            setrchone:'',
+            nowid:''
+        },
+        methods:{
+            findApp:function(){
+                var that = app;
+                that.nowid=''
+                $.ajax({
+                    url:serverHost+'/products',
+                    type:'get',
+                    dataType:'json',
+                    data:{
+                        current:1,
+                        size:20,
+                    },
+                    success(data){
+                        that.producta = data.data.records
+                        app.setrchone=''
+                        that.producta = data.data.records
+                        that.all = Math.ceil(data.data.total / that.size)
+                        var alla = Math.ceil(that.all)
+                        // for (var i in data.data.records) {
+                        //     data.data.records[i].gmtCreate = formatDate(new Date(data.data.records[i].gmtCreate), 'yyyy-MM-dd')
+                        // }
+                    }
+                })
+            },
+            getshowonetype:function(){
+                _ajax({
+                url : "/ProductTypes/list",  // url---->地址
+                type : "GET",   // type ---> 请求方式
+                async : true,   // async----> 同步：false，异步：true 
+                data : {        //传入信息
+                    current:1,
+                    size:10,
+                },
+                success : function(data){  
+                   let datas =JSON.parse(data)
+                    if(datas.code==200){
+                        let typeonedata =[]
+                        for(let i=0;i<datas.data.records.length;i++){
+                                typeonedata.push({name:datas.data.records[i].typeName,id:datas.data.records[i].tid,check:false})
+                        }
+                        app.type=typeonedata
+                    }
+                }
+             })
+            },
+        changefindData:function(type,id,ftp){
+            var that = app;
+           if(type==1){
+               for(let i=0;i<that.type.length;i++){
+                    that.type[i].check=false
+               }
+               if(ftp==1){
+                    app.setrchone=''
+                    app.findApp()
+                }else{
+                    for(let i=0;i<that.type.length;i++){
+                        if(that.type[i].id==id){
+                            that.type[i].check=true
+                        }
+                    }
+                    app.gettwotype(id)
+                    app.setrchone='1'
+                    app.setrchtwo=''
+                }
+
+           }
+           if(type==2){
+                for(let i=0;i<that.typetwo.length;i++){
+                    that.typetwo[i].check=false
+                }
+                if(ftp==1){
+                    app.setrchtwo=''
+                    app.getshopdata(app.oneid)
+                }else{
+                    for(let i=0;i<that.typetwo.length;i++){
+                        if(that.typetwo[i].id==id){
+                            that.typetwo[i].check=true
+                        }
+                    }
+                    app.setrchtwo='1'
+                    app.getshopdata(id)
+                }
+            }
+        },getonetype:function(){
+            _ajax({
+                url : "/ProductTypes/list",  // url---->地址
+                type : "GET",   // type ---> 请求方式
+                async : true,   // async----> 同步：false，异步：true 
+                data : {        //传入信息
+                    current:1,
+                    size:10,
+                },
+                success : function(data){  
+                   let datas =JSON.parse(data)
+                   console.log(datas)
+                    if(datas.code==200){
+                        let typeonedata =[]
+                        for(let i=0;i<datas.data.records.length;i++){
+                            if(i==0){
+                                typeonedata.push({name:datas.data.records[i].typeName,id:datas.data.records[i].tid,check:true})
+                                app.gettwotype(datas.data.records[i].tid)
+                            }else{
+                                typeonedata.push({name:datas.data.records[i].typeName,id:datas.data.records[i].tid,check:false})
+                            }
+                        }
+                        app.type=typeonedata
+                    }
+                }
+             })
+        },gettwotype:function(id){
+            app.oneid=id
+            app.getshopdata(id,1,1)
+            _ajax({
+                url : "/ProductTypes/list",  // url---->地址
+                type : "GET",   // type ---> 请求方式
+                async : true,   // async----> 同步：false，异步：true 
+                data : {        //传入信息
+                    current:1,
+                    size:10,
+                    pid:id
+                },
+                success : function(data){  
+                   let datas =JSON.parse(data)
+                   console.log(datas)
+                    if(datas.code==200){
+                        let typetwodata =[]
+                        for(let i=0;i<datas.data.records.length;i++){
+                            typetwodata.push({name:datas.data.records[i].typeName,id:datas.data.records[i].tid,check:false})
+                        }
+                        app.typetwo=typetwodata
+                    }
+                }
+             })
+        },getshopdata:function(id,page,type){
+            app.nowid=id
+            _ajax({
+                url : "/products",  // url---->地址
+                type : "GET",   // type ---> 请求方式
+                async : true,   // async----> 同步：false，异步：true 
+                data : {        //传入信息
+                    current:1,
+                    size:20,
+                    tid:id
+                },
+                success : function(data){  
+                    let datas =JSON.parse(data)
+                    if(datas.code==200){
+                        app.producta = datas.data.records
+                    }
+                }
+             })
+         },pageClick: function () {
+                //获取新闻列表v
+                var that = app
+                let searchid =0;
+                if(app.nowid!=''){
+                    searchid=app.nowid
+                }
+                _ajax({
+                    url : "/products",  // url---->地址
+                    type : "GET",   // type ---> 请求方式
+                    async : true,   // async----> 同步：false，异步：true 
+                    data : {        //传入信息
+                        current:1,
+                        size:20,
+                        tid:id
+                    },
+                    success : function(data){  
+                        let datas =JSON.parse(data)
+                        if(datas.code==200){
+                            that.producta = data.data.records
+                            that.all = Math.ceil(data.data.total / that.size)
+                            var alla = Math.ceil(that.all)
+                        }
+                    }
+                })
+            },
+        },computed: {
+                indexs: function () {
+                    var left = 1;
+                    var right = this.all;
+                    var ar = [];
+                    if (this.all >= 5) {
+                        //这里最大范围从3到6，如果到达7，那么下边加2变成9，已经超过最大的范围值
+                        if (this.cur > 3 && this.cur < this.all - 1) {
+                            //以4为参考基准，左面加2右边加2
+                            left = this.cur - 2
+                            right = this.cur + 2
+                        } else {
+                            if (this.cur <= 3) {
+                                left = 1
+                                right = 5
+                            } else {
+                                right = this.all
+                                left = this.all - 4
+                            }
+                        }
+                    }
+                    while (left <= right) {
+                        ar.push(left)
+                        left++
+                    }
+                    console.log(ar);
+                    return ar
+                }
+            }
+        
+    });
+    app.findApp();
+    app.getshowonetype()
+    // app.getonetype()
+</script>
+<script>
+    var serverHost = getServerHosts();
+    var link = new Vue({
+        el:'#link',
+        data:{
+            link:[]
+        },
+        methods: {
+            findData:function(){
+                var that = link;
+                $.ajax({
+                    url:serverHost+'/links/list',
+                    type:'get',
+                    dataType:'json',
+                    data:{
+                        current:1,
+                        size:20
+                    },
+                    success:function(data){
+                        that.link = data.data.records
+                        console.log(that.link)
+                    }
+                })
+            }
+        },
+    })
+    link.findData()
+</script>
+<script>
+    function gotoTop(minHeight){
+
+        // 定义点击返回顶部图标后向上滚动的动画
+        $("#gotoTop").click(
+            function(){$('html,body').animate({scrollTop:'0px'},'slow');
+        })
+
+        // 获取页面的最小高度，无传入值则默认为600像素
+        minHeight? minHeight = minHeight:minHeight = 600;
+
+        // 为窗口的scroll事件绑定处理函数
+        $(window).scroll(function(){
+
+            // 获取窗口的滚动条的垂直滚动距离
+            var s = $(window).scrollTop();
+
+            // 当窗口的滚动条的垂直距离大于页面的最小高度时，让返回顶部图标渐现，否则渐隐
+            if( s > minHeight){
+                $("#gotoTop").fadeIn(500);
+            }else{
+                $("#gotoTop").fadeOut(500);
+            };
+        });
+    };
+    gotoTop();
+</script>
